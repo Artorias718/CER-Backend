@@ -26,7 +26,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     "corsheaders",
+    "django.contrib.sites",  # Necessario per django-allauth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",  # Aggiungi il provider di Google
     "api",  # includo il modulo api
 ]
 
@@ -40,10 +46,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Dominio del frontend
+    "http://localhost:8000",
 ]
 
 ROOT_URLCONF = "portal.urls"
@@ -122,3 +130,68 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = (
     "api.CustomUser"  # 'api' è il nome dell'app in cui si trova il modello
 )
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",  # Autenticazione standard Django
+    "allauth.account.auth_backends.AuthenticationBackend",  # Autenticazione tramite django-allauth
+)
+
+# Configurazioni di django-allauth
+SITE_ID = 1
+
+# Permetti il login e la registrazione tramite Google
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+# ACCOUNT_LOGIN_METHODS = "asername"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+
+
+# REST_FRAMEWORK = {
+#     "DEFAULT_AUTHENTICATION_CLASSES": [
+#         "rest_framework_simplejwt.authentication.JWTAuthentication",  # Aggiungi questa riga
+#     ],
+#     "DEFAULT_PERMISSION_CLASSES": [
+#         "rest_framework.permissions.IsAuthenticated",  # Per forzare l'autenticazione
+#     ],
+# }
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",  # Assicurati che questa riga sia presente
+    ],
+    #     "DEFAULT_PERMISSION_CLASSES": [
+    #         "rest_framework.permissions.IsAuthenticated",  # Assicurati che questa riga sia presente per le API protette
+    #     ],
+    #
+}
+
+# REST_FRAMEWORK = {
+#     "DEFAULT_AUTHENTICATION_CLASSES": [
+#         "rest_framework.authentication.TokenAuthentication",
+#     ],
+#     "DEFAULT_PERMISSION_CLASSES": [
+#         "rest_framework.permissions.IsAuthenticated",
+#     ],
+# }
+
+# AUTHENTICATION_BACKENDS = [
+#     # Needed to login by username in Django admin, regardless of `allauth`
+#     "django.contrib.auth.backends.ModelBackend",
+#     # `allauth` specific authentication methods, such as login by email
+#     "allauth.account.auth_backends.AuthenticationBackend",
+# ]
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     "google": {
+#         "SCOPE": [
+#             "profile",
+#             "email",
+#         ],
+#         "AUTH_PARAMS": {
+#             "access_type": "online",
+#         },
+#         "OAUTH_PKCE_ENABLED": True,
+#     }
+# }

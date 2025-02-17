@@ -4,14 +4,13 @@ from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 class CustomUser(AbstractUser):
     birthday = models.DateField(null=True, blank=True)
+    profile_picture_url = models.URLField(max_length=200, null=True, blank=True)
 
 
 class Cat(models.Model):
