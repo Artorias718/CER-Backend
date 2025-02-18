@@ -148,6 +148,22 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 
 
+def load_config(file_path):
+    config = {}
+    with open(file_path, "r") as file:
+        for line in file:
+            key, value = line.strip().split("=")
+            config[key] = value
+    return config
+
+
+# Carica le configurazioni dal file 'config.txt'
+config = load_config("config.txt")
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
+
 # REST_FRAMEWORK = {
 #     "DEFAULT_AUTHENTICATION_CLASSES": [
 #         "rest_framework_simplejwt.authentication.JWTAuthentication",  # Aggiungi questa riga
