@@ -13,3 +13,9 @@ class CatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cat
         fields = ["id", "name", "age", "color", "breed"]  # I campi che vogliamo esporre
+
+
+class CampagnaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campagna
+        fields = "__all__"

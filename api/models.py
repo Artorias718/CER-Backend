@@ -19,5 +19,27 @@ class Cat(models.Model):
     color = models.CharField(max_length=50)  # Colore del gatto
     breed = models.CharField(max_length=100)  # Razza del gatto
 
+
+class Campagna(models.Model):
+    name = models.CharField(max_length=200)  # Nome della campagna
+    ente_promotore = models.CharField(max_length=200)  # Ente promotore
+    description = models.TextField()  # Descrizione della campagna
+    soglia_minima = models.DecimalField(
+        max_digits=10, decimal_places=2
+    )  # Soglia minima da raggiungere
+    soglia_massima = models.DecimalField(
+        max_digits=10, decimal_places=2
+    )  # Soglia massima
+    soglia_versata = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00
+    )  # Soldi raccolti finora
+    ha_raggiunto_minimo = models.BooleanField(
+        default=False
+    )  # Flag per soglia minima raggiunta
+    completata = models.BooleanField(default=False)  # Flag per campagna completata
+    cover_image_url = models.URLField(
+        max_length=500, blank=True
+    )  # URL immagine di copertina
+
     def __str__(self):
         return self.name

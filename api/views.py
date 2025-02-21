@@ -16,7 +16,6 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from allauth.socialaccount.models import SocialAccount
 
-
 from .models import *
 from .serializers import *
 
@@ -163,3 +162,94 @@ class UserProfileView(APIView):
                 ),
             }
         )
+
+
+class CampagnaListCreateView(APIView):
+    def get(self, request):
+        """
+        Recupera tutte le campagne.
+        """
+        campagne = Campagna.objects.all()  # Recupera tutte le campagne dal database
+        serializer = CampagnaSerializer(campagne, many=True)  # Serializza i dati
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        """
+        Crea una nuova campagna.
+        """
+        serializer = CampagnaSerializer(
+            data=request.data
+        )  # Passa i dati in ingresso al serializer
+        if serializer.is_valid():  # Verifica se i dati sono validi
+            serializer.save()  # Salva la nuova campagna nel database
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CampagnaDetailView(APIView):
+    def get(self, request, pk):
+        """
+        Recupera i dettagli di una singola campagna.
+        """
+        try:
+            campagna = Campagna.objects.get(pk=pk)  # Recupera la campagna con l'ID (pk)
+            serializer = CampagnaSerializer(
+                campagna
+            )  # Serializza i dati della campagna
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Campagna.DoesNotExist:
+            return Response(
+                {"error": "Campagna non trovata!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+    def put(self, request, pk):
+        """
+        Aggiorna una campagna esistente con l'ID specificato.
+        """
+        try:
+            campagna = Campagna.objects.get(pk=pk)  # Recupera la campagna con l'ID (pk)
+            serializer = CampagnaSerializer(
+                campagna, data=request.data
+            )  # Serializza con i dati aggiornati
+            if serializer.is_valid():  # Verifica se i dati sono validi
+                serializer.save()  # Salva la campagna aggiornata
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Campagna.DoesNotExist:
+            return Response(
+                {"error": "Campagna non trovata!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+    def patch(self, request, pk):
+        """
+        Aggiorna parzialmente una campagna esistente con l'ID specificato.
+        """
+        try:
+            campagna = Campagna.objects.get(pk=pk)  # Recupera la campagna con l'ID (pk)
+            serializer = CampagnaSerializer(
+                campagna, data=request.data, partial=True
+            )  # Aggiornamento parziale
+            if serializer.is_valid():  # Verifica se i dati sono validi
+                serializer.save()  # Salva le modifiche parziali
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Campagna.DoesNotExist:
+            return Response(
+                {"error": "Campagna non trovata!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+    def delete(self, request, pk):
+        """
+        Elimina una campagna esistente con l'ID specificato.
+        """
+        try:
+            campagna = Campagna.objects.get(pk=pk)  # Recupera la campagna con l'ID (pk)
+            campagna.delete()  # Elimina la campagna dal database
+            return Response(
+                {"message": "Campagna eliminata con successo!"},
+                status=status.HTTP_204_NO_CONTENT,  # Status 204 indica che la cancellazione è avvenuta senza contenuto di risposta
+            )
+        except Campagna.DoesNotExist:
+            return Response(
+                {"error": "Campagna non trovata!"}, status=status.HTTP_404_NOT_FOUND
+            )

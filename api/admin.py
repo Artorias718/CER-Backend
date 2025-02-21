@@ -3,18 +3,6 @@ from .models import *
 from django.contrib.auth.admin import UserAdmin
 
 
-# Register your models here.
-@admin.register(Cat)
-class CatAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "age",
-        "color",
-        "breed",
-    )  # Le colonne da visualizzare nell'admin
-    search_fields = ("name", "color", "breed")  # Campi su cui poter cercare nell'admin
-
-
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = (
@@ -47,5 +35,31 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
-# Registra il CustomUser con l'admin
 admin.site.register(CustomUser, CustomUserAdmin)
+
+
+# Register your models here.
+@admin.register(Cat)
+class CatAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "age",
+        "color",
+        "breed",
+    )  # Le colonne da visualizzare nell'admin
+    search_fields = ("name", "color", "breed")  # Campi su cui poter cercare nell'admin
+
+
+@admin.register(Campagna)
+class CampagnaAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "ente_promotore",
+        "soglia_minima",
+        "soglia_massima",
+        "soglia_versata",
+        "ha_raggiunto_minimo",
+        "completata",
+    )
+    search_fields = ("name", "ente_promotore")
+    list_filter = ("completata", "ha_raggiunto_minimo")

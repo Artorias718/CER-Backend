@@ -7,4 +7,8 @@ urlpatterns = [
     path("api/cats/", CatListAPIView.as_view(), name="cat-list"),
     path("api/authenticate/", google_authenticate, name="google_authenticate"),
     path("api/profile/", UserProfileView.as_view(), name="user_profile"),
+    path("api/campagne/", CampagnaListCreateView.as_view(), name="campaigns"),
+    path(
+        "api/campagne/<int:pk>/", CampagnaDetailView.as_view(), name="campagna-detail"
+    ),
 ]
