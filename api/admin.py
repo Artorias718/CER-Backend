@@ -39,15 +39,6 @@ admin.site.register(CustomUser, CustomUserAdmin)
 
 
 # Register your models here.
-@admin.register(Cat)
-class CatAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "age",
-        "color",
-        "breed",
-    )  # Le colonne da visualizzare nell'admin
-    search_fields = ("name", "color", "breed")  # Campi su cui poter cercare nell'admin
 
 
 @admin.register(Campagna)

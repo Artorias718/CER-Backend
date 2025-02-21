@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",  # Aggiungi il provider di Google
+    "allauth.socialaccount.providers.google",
+    "drf_yasg",
     "api",  # includo il modulo api
 ]
 

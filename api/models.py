@@ -13,13 +13,6 @@ class CustomUser(AbstractUser):
     profile_picture_url = models.URLField(max_length=200, null=True, blank=True)
 
 
-class Cat(models.Model):
-    name = models.CharField(max_length=100)  # Aggiungiamo un nome al gatto (opzionale)
-    age = models.IntegerField()  # Età del gatto
-    color = models.CharField(max_length=50)  # Colore del gatto
-    breed = models.CharField(max_length=100)  # Razza del gatto
-
-
 class Campagna(models.Model):
     name = models.CharField(max_length=200)  # Nome della campagna
     ente_promotore = models.CharField(max_length=200)  # Ente promotore
